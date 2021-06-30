@@ -1,18 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
+import ToDoLists from './components/ToDoLists';
 
 const App = () => {
-  return(
+
+  const [inputList, setInputList] = useState("");
+  const [items, setItems] = useState([]);
+
+  const itemEvent = (event) => {
+    setInputList(event.target.value);
+  };
+
+  const listOfItems = () => {
+    setItems((oldItems) => {
+      return [...oldItems, inputList];
+    });
+    setInputList('');
+  };
+
+  const deleteItems = () => {};
+
+  return (
     <>
       <div className="main_div">
         <div className="center_div">
           <br />
           <h1>ToDo List</h1>
           <br />
-          <input type="text" placeholder="Add a Item" />
-          <button> + </button>
+          <input type="text"
+            placeholder="Add a Item"
+            value={inputList}
+            onChange={itemEvent} />
+          <button onClick={listOfItems}> + </button>
 
           <ol>
-            <li>Buy apple</li>
+            {/* <li>{inputList}</li> */}
+
+            {items.map((itemval, index) => {
+              return <ToDoLists 
+              text={itemval}
+              key={index}
+              id={index}
+              onSelect={deleteItems} />;
+            })}
+
           </ol>
         </div>
       </div>
